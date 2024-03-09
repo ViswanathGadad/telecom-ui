@@ -20,5 +20,11 @@ export const Enroll = ({ userId }) => {
 
   if (custLoading || plansLoading) return <Spinner animation="border" />;
 
-  return <ChangePlan customer={custData.customer} plans={plansData.plans} />;
+  return (
+    <ChangePlan
+      customerId={userId}
+      customer={custData.customer}
+      plans={plansData.plans}
+    />
+  );
 };

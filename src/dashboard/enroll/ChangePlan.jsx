@@ -3,9 +3,14 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { PlanCard } from "./PlanCard";
+import Spinner from "react-bootstrap/Spinner";
+import useFetch from "../../hooks/useFetch";
 
-export const ChangePlan = ({ customer, plans }) => {
+export const ChangePlan = ({ customerId, customer, plans }) => {
   const [selected, setSelected] = useState(plans[0].plan_id);
+  const [url, setUrl] = useState(null);
+  const [requestOptions, setRequestOptions] = useState(null);
+  const { loading } = useFetch(url, requestOptions);
 
   const getEnrollment = () => {
     if (customer.enrollments.length === 0) return null;
@@ -25,6 +30,34 @@ export const ChangePlan = ({ customer, plans }) => {
 
   const enrollment = getEnrollment();
   const buttonName = getButtonName(enrollment);
+
+  const onSubmit = () => {
+    if (buttonName === "Modify Plan") {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const options = {
+        method: "PUT",
+        headers: myHeaders,
+        body: JSON.stringify({
+          plan_id: selected,
+        }),
+      };
+      setRequestOptions(options);
+      setUrl(`/customer/${customerId}/enroll/${enrollment.enrollment_id}`);
+    } else {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const options = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          plan_id: selected,
+        }),
+      };
+      setRequestOptions(options);
+      setUrl(`/customer/${customerId}/enroll`);
+    }
+  };
 
   return (
     <>
@@ -80,9 +113,10 @@ export const ChangePlan = ({ customer, plans }) => {
           </tr>
           <tr>
             <td colSpan={2} style={{ textAlign: "center" }}>
-              <Button variant="primary" size="lg" active>
+              <Button variant="primary" size="lg" active onClick={onSubmit}>
                 {buttonName}
               </Button>
+              {loading && <Spinner animation="border" size="sm" />}
             </td>
           </tr>
         </tbody>
