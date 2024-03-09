@@ -16,7 +16,7 @@ export const Plan = ({ enrollments }) => {
             >
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>Plan</th>
                   <th>Enrolled date</th>
                   <th>Expiry date</th>
                   <th>Status</th>
