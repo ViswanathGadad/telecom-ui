@@ -1,0 +1,17 @@
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-bottom: 1px solid black;
+}
+
+header img {
+  max-height: 50px;
+}
+
+main {
+  padding: 20px;
+}
